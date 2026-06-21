@@ -1,0 +1,97 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'supchat/supchat.css' %}">
+
+<div class="supchat-widget supchat-{{ config.POSITION }} supchat-theme-{{ config.THEME }}"
+     data-supchat
+     data-start-url="{{ start_url }}"
+     data-title="{{ config.TITLE|escape }}">
+  {% csrf_token %}
+
+  <!-- Launcher -->
+  <button type="button" class="supchat-launcher" data-supchat-toggle
+          aria-controls="supchat-panel" aria-expanded="false" aria-label="Open chat">
+    <span class="supchat-launcher-icon" aria-hidden="true">
+      <svg class="supchat-ico-open" viewBox="0 0 24 24" width="24" height="24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <svg class="supchat-ico-close" viewBox="0 0 24 24" width="24" height="24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </span>
+    <span class="supchat-launcher-label">{{ config.TITLE }}</span>
+    <span class="supchat-badge" data-supchat-badge hidden>0</span>
+  </button>
+
+  <!-- Panel -->
+  <section id="supchat-panel" class="supchat-panel" data-supchat-panel
+           hidden aria-live="polite" role="dialog" aria-label="Chat panel">
+
+    <header class="supchat-header">
+      <div class="supchat-header-info">
+        <span class="supchat-header-avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+        <div>
+          <strong class="supchat-header-title">{{ config.TITLE }}</strong>
+          <span class="supchat-header-status" data-supchat-online>
+            <span class="supchat-dot"></span>Online
+          </span>
+        </div>
+      </div>
+      <div class="supchat-header-actions">
+        <button type="button" class="supchat-btn-icon" data-supchat-close
+                aria-label="Close chat" title="Close">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="supchat-messages" data-supchat-messages role="log" aria-label="Chat messages">
+      <div class="supchat-empty" data-supchat-empty>
+        <svg viewBox="0 0 24 24" width="48" height="48" fill="none"
+             stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"
+             opacity=".35">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <p>Start a conversation</p>
+      </div>
+    </div>
+
+    <!-- Typing indicator -->
+    <div class="supchat-typing" data-supchat-typing hidden>
+      <span></span><span></span><span></span>
+    </div>
+
+    <form class="supchat-form" data-supchat-form autocomplete="off">
+      <div class="supchat-input-wrap">
+        <textarea name="text" data-supchat-input
+                  maxlength="{{ config.MAX_MESSAGE_LENGTH }}" rows="1"
+                  placeholder="Type a message…" required
+                  aria-label="Message input"></textarea>
+        <button type="submit" class="supchat-send-btn" aria-label="Send message" disabled>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+    </form>
+
+    <footer class="supchat-footer">
+      <span class="supchat-status" data-supchat-status></span>
+      <span class="supchat-powered">Powered by <strong>SupChat</strong></span>
+    </footer>
+  </section>
+</div>
+
+<script src="{% static 'supchat/supchat.js' %}" defer></script>
