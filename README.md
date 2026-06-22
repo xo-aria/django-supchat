@@ -450,9 +450,98 @@ pytest
 
 ---
 
-## 📄 License
+## 📄 License & Trademark
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+### Code License
+**django-supchat** is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+
+This means:
+- ✅ You can use, modify, and distribute this software
+- ✅ You can use it commercially
+- ⚠️ You **must** disclose source code (even for SaaS/network services)
+- ⚠️ You **must** include the same license in distributions
+- ⚠️ You **must** state changes you made
+
+📖 [Read the full AGPL-3.0 license](LICENSE)
+
+### Trademark Policy
+The name **"SupChat"** is a trademark of xo-aria. See the [Trademark Policy](TRADEMARK.md) for details on:
+- ✅ How to use the SupChat name
+- ✅ Attribution requirements
+- ❌ What you cannot do
+- 🎨 Logo usage guidelines
+
+**Quick Summary:**
+- You **must** keep "SupChat" in the name when distributing
+- You **must** include attribution: `Based on SupChat by xo-aria - https://github.com/xo-aria/django-supchat`
+- You **cannot** rebrand without mentioning SupChat
+- You **cannot** use SupChat logos without permission
+
+### Why AGPL-3.0?
+
+We chose AGPL-3.0 to:
+1. **Protect user freedom** - Ensure the software stays free
+2. **Close the SaaS loophole** - Even network services must share source code
+3. **Encourage contributions** - Improvements benefit everyone
+4. **Maintain quality** - Prevent closed-source forks from fragmenting the project
+
+### Commercial Use
+
+Yes, you can use SupChat commercially! Just:
+- ✅ Comply with AGPL-3.0 (disclose source code)
+- ✅ Follow the trademark policy (attribution)
+- ✅ Document your changes
+
+Need a **commercial license** without AGPL restrictions? [Contact us](mailto:your-email@example.com).
+
+---
+
+## 🙏 Attribution
+
+If you use SupChat in your project, we'd appreciate:
+
+### Required (by license):
+```markdown
+Based on SupChat by xo-aria
+https://github.com/xo-aria/django-supchat
+Licensed under AGPL-3.0
+```
+
+### Appreciated (but optional):
+- ⭐ Star the repository on GitHub
+- 📝 Mention "Powered by SupChat" in your docs/about page
+- 🔗 Link back to https://github.com/xo-aria/django-supchat
+- 🐦 Tweet about it (we'd love to see your projects!)
+
+---
+
+## 📞 Support & Contact
+
+### Bug Reports & Feature Requests:
+- 🐛 [GitHub Issues](https://github.com/xo-aria/django-supchat/issues)
+
+### Questions & Discussions:
+- 💬 [GitHub Discussions](https://github.com/xo-aria/django-supchat/discussions)
+
+### Commercial Licensing:
+- 📧 Email: [your-email@example.com]
+- 💼 Custom licensing available for closed-source projects
+
+### Security Issues:
+- 🔒 Please email security issues directly to [your-email@example.com]
+- ⚠️ Do **not** open public issues for security vulnerabilities
+
+---
+
+<div align="center">
+
+**If django-supchat helps your project, please consider:**
+
+[⭐ Starring on GitHub](https://github.com/xo-aria/django-supchat) • [🍴 Forking](https://github.com/xo-aria/django-supchat/fork) • [💬 Joining Discussions](https://github.com/xo-aria/django-supchat/discussions)
+
+**Made with ❤️ by [xo-aria](https://github.com/xo-aria)**
+
+</div>
 
 ---
 
