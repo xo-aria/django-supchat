@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupChat — Operator Dashboard</title>
+    <link rel="stylesheet" href="{% static 'supchat/operator.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    <span>SupChat</span>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">
+                        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        </svg>
+                        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                    </button>
+                    <button class="icon-btn mobile-only" onclick="toggleSidebar()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h4>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    Online Operators
+                </h4>
+                <div class="operators-list">
+                    {% for op in online_operators %}
+                    <div class="operator-row">
+                        <span class="online-dot"></span>
+                        <span>{{ op.user.get_full_name|default:op.user.username }}</span>
+                    </div>
+                    {% empty %}
+                    <div class="empty-hint">No one online</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="sidebar-section conversations-section">
+                <div class="section-header">
+                    <h4>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        Conversations
+                    </h4>
+                    <span class="count-badge">{{ total_count }}</span>
+                </div>
+                <div class="search-box">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search..." oninput="filterConversations()">
+                </div>
+                <div class="conversation-list" id="conversationList">
+                    {% for conv in conversations %}
+                    <div class="conv-item {% if conv.status == 'closed' %}is-closed{% endif %}"
+                         data-id="{{ conv.pk }}"
+                         data-participant="{{ conv.user.username|default:'Guest' }}"
+                         onclick="loadConversation('{{ conv.pk }}')">
+                        <div class="conv-avatar">
+                            {{ conv.user.username|default:"G"|slice:":1"|upper }}
+                        </div>
+                        <div class="conv-content">
+                            <div class="conv-top">
+                                <span class="conv-name">{{ conv.user.username|default:"Guest" }}</span>
+                                <span class="conv-time">{{ conv.last_message_at|timesince }} ago</span>
+                            </div>
+                            <div class="conv-bottom">
+                                <span class="conv-preview">
+                                    {% if conv.unread_count > 0 %}
+                                        <span class="unread-dot"></span>
+                                    {% endif %}
+                                    {{ conv.messages.last.text|default:"No messages"|truncatechars:40 }}
+                                </span>
+                                {% if conv.unread_count > 0 %}
+                                    <span class="unread-badge">{{ conv.unread_count }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="empty-state">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        <p>No conversations yet</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </aside>
+
+        <main class="main" id="mainContent">
+            {% if active_page == 'dashboard' %}
+                {% include "supchat/operator/partials/dashboard_content.html" %}
+            {% elif active_page == 'analytics' %}
+                {% include "supchat/operator/partials/analytics_content.html" %}
+            {% endif %}
+        </main>
+    </div>
+
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-icon danger">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+            </div>
+            <h3>Delete Conversation?</h3>
+            <p>This action cannot be undone. All messages will be permanently removed.</p>
+            <div class="modal-actions">
+                <button class="btn btn-ghost" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="{% static 'supchat/operator.js' %}"></script>
+    <script>
+        const CSRF_TOKEN = "{{ csrf_token }}";
+        const ACTIVE_PAGE = "{{ active_page }}";
+        {% if active_page == 'analytics' %}
+            const CHART_LABELS_7 = {{ chart_labels_7|safe }};
+            const CHART_DATA_7 = {{ chart_data_7|safe }};
+            const CHART_LABELS_30 = {{ chart_labels_30|safe }};
+            const CHART_DATA_30 = {{ chart_data_30|safe }};
+        {% endif %}
+        initApp();
+    </script>
+</body>
+</html>
