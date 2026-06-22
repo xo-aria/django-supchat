@@ -85,11 +85,6 @@ supchat = [
     "locale/**/*",
 ]
 
-[tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "tests.settings"
-python_files = ["test_*.py"]
-addopts = "-v --cov=supchat --cov-report=term-missing"
-
 [tool.black]
 line-length = 100
 target-version = ["py39"]
