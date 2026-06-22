@@ -14,7 +14,7 @@
 **Zero dependencies. No WebSockets. No Redis. No React.**<br>
 Just Django, vanilla JS, and Server-Sent Events.
 
-[Installation](#-quick-start) • [Demo](#-screenshots) • [Documentation](#-documentation) • [Examples](#-examples)
+[Installation](#-quick-start) • [Documentation](#-documentation)
 
 </div>
 
