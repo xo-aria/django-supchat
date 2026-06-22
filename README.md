@@ -112,6 +112,7 @@ python manage.py migrate
 ### 5. Render the Widget
 
 ```django
+{% raw %}
 {% load supchat %}
 
 <!DOCTYPE html>
@@ -125,6 +126,7 @@ python manage.py migrate
     {% supchat %}
 </body>
 </html>
+{% endraw %}
 ```
 
 That's it! 🎉 Your chat widget is live.
