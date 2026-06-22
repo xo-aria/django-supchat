@@ -5,7 +5,7 @@ import json
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.http import Http404, HttpRequest, JsonResponse
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
-
+from django.views.decorators.csrf import csrf_exempt
 from .forms import MessageReadForm, SendMessageForm
 from .models import Message
 from .permissions import can_access_conversation
@@ -37,7 +37,7 @@ def _json_body(request: HttpRequest) -> dict:
 def _error_response(exc: Exception, status: int = 400) -> JsonResponse:
     return JsonResponse({"ok": False, "error": str(exc)}, status=status)
 
-
+@csrf_exempt
 @require_POST
 def start_conversation_view(request: HttpRequest) -> JsonResponse:
     try:
@@ -49,7 +49,7 @@ def start_conversation_view(request: HttpRequest) -> JsonResponse:
         set_guest_cookie(response, guest_id)
     return response
 
-
+@csrf_exempt
 @require_http_methods(["GET", "POST"])
 def messages_view(request: HttpRequest, conversation_id) -> JsonResponse:
     try:
@@ -70,7 +70,7 @@ def messages_view(request: HttpRequest, conversation_id) -> JsonResponse:
         return _error_response(exc, 403 if isinstance(exc, PermissionDenied) else 400)
     return JsonResponse({"ok": True, "message": serialize_message(message)}, status=201)
 
-
+@csrf_exempt
 @require_POST
 def close_conversation_view(request: HttpRequest, conversation_id) -> JsonResponse:
     try:
@@ -80,7 +80,7 @@ def close_conversation_view(request: HttpRequest, conversation_id) -> JsonRespon
         return _error_response(exc, 403)
     return JsonResponse({"ok": True, "conversation": serialize_conversation(conversation)})
 
-
+@csrf_exempt
 @require_POST
 def mark_read_view(request: HttpRequest, conversation_id) -> JsonResponse:
     try:
@@ -93,7 +93,7 @@ def mark_read_view(request: HttpRequest, conversation_id) -> JsonResponse:
         return _error_response(exc, 403 if isinstance(exc, PermissionDenied) else 400)
     return JsonResponse({"ok": True, "count": count})
 
-
+@csrf_exempt
 @require_GET
 def events_view(request: HttpRequest, conversation_id):
     try:
