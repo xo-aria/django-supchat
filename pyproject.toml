@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "django-supchat"
-version = "1.7.0"
+version = "1.8.0"
 description = "A lightweight, real-time support chat widget for Django powered by SSE"
 readme = "README.md"
 requires-python = ">=3.9"
