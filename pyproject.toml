@@ -1,55 +1,102 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "django-supchat"
-version = "0.1.0"
-description = "A lightweight, secure SSE-powered support chat widget for Django."
+version = "1.0.0"
+description = "A lightweight, real-time support chat widget for Django powered by SSE"
 readme = "README.md"
-requires-python = ">=3.10"
-license = {text = "BSD-3-Clause"}
-authors = [{name = "django-supchat maintainers"}]
-keywords = ["django", "chat", "support", "sse", "eventsource"]
+requires-python = ">=3.9"
+license = {text = "AGPL-3.0"}
+authors = [
+    {name = "xo-aria", email = "your-email@example.com"}
+]
+maintainers = [
+    {name = "xo-aria", email = "your-email@example.com"}
+]
+keywords = [
+    "django",
+    "chat",
+    "support",
+    "real-time",
+    "sse",
+    "server-sent-events",
+    "widget",
+    "customer-support",
+    "live-chat",
+]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
     "Framework :: Django",
     "Framework :: Django :: 4.2",
     "Framework :: Django :: 5.0",
     "Framework :: Django :: 5.1",
-    "Framework :: Django :: 5.2",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: BSD License",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Topic :: Communications :: Chat",
     "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dependencies = ["Django>=4.2"]
+dependencies = [
+    "django>=4.2",
+]
 
 [project.optional-dependencies]
-test = ["pytest>=8", "pytest-django>=4.8"]
+test = [
+    "pytest>=7.0",
+    "pytest-django>=4.5",
+    "pytest-cov>=4.0",
+    "pytest-asyncio>=0.21",
+    "factory-boy>=3.3",
+]
+dev = [
+    "django-supchat[test]",
+    "black>=23.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5",
+    "django-stubs>=4.2",
+    "pre-commit>=3.4",
+]
 
 [project.urls]
-Homepage = "https://github.com/example/django-supchat"
-Documentation = "https://github.com/example/django-supchat#readme"
-Issues = "https://github.com/example/django-supchat/issues"
+Homepage = "https://github.com/xo-aria/django-supchat"
+Documentation = "https://github.com/xo-aria/django-supchat#readme"
+Repository = "https://github.com/xo-aria/django-supchat"
+Issues = "https://github.com/xo-aria/django-supchat/issues"
+Changelog = "https://github.com/xo-aria/django-supchat/blob/main/CHANGELOG.md"
 
-[tool.setuptools.packages.find]
-include = ["supchat*"]
+[tool.setuptools]
+packages = ["supchat"]
+include-package-data = true
 
 [tool.setuptools.package-data]
 supchat = [
-    "templates/supchat/*.html",
-    "static/supchat/*.js",
-    "static/supchat/*.css",
+    "templates/**/*.html",
+    "static/**/*",
+    "locale/**/*",
 ]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.settings"
-python_files = ["test_*.py", "tests.py"]
-testpaths = ["tests"]
-addopts = "-ra"
+python_files = ["test_*.py"]
+addopts = "-v --cov=supchat --cov-report=term-missing"
+
+[tool.black]
+line-length = 100
+target-version = ["py39"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["
