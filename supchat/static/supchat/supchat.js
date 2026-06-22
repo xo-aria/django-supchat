@@ -334,24 +334,6 @@
     input.addEventListener('input', function () {
       autoResize(input);
       sendBtn.disabled = !input.value.trim();
-      
-      if (conversation) {
-        fetch(endpoint(root, conversation.id, 'typing/'), {
-          method: 'POST',
-          credentials: 'same-origin',
-          headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken(root) },
-          body: JSON.stringify({ is_typing: true })
-        });
-        clearTimeout(typingTimeout);
-        typingTimeout = setTimeout(function() {
-          fetch(endpoint(root, conversation.id, 'typing/'), {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken(root) },
-            body: JSON.stringify({ is_typing: false })
-          });
-        }, 2000);
-      }
     });
 
     input.addEventListener('keydown', function (e) {
