@@ -11,7 +11,6 @@ urlpatterns = [
     path("conversations/<uuid:conversation_id>/read/", views.mark_read_view, name="mark_read"),
     path("conversations/<uuid:conversation_id>/close/", views.close_conversation_view, name="close"),
     path("conversations/<uuid:conversation_id>/events/", views.events_view, name="events"),
-    path('conversations/<uuid:conversation_id>/typing/', operator_views.typing_view, name='supchat_typing'),
 
     path("operator/", operator_views.dashboard_view, name="operator_dashboard"),
     path("operator/partials/dashboard/", operator_views.dashboard_partial, name="operator_dashboard_partial"),
