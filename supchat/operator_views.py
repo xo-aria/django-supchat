@@ -274,7 +274,7 @@ def conversation_list_api(request: HttpRequest):
 
     return JsonResponse({"ok": True, "conversations": data})
 
-
+@staff_member_required
 @require_POST
 def typing_view(request: HttpRequest, conversation_id):
     try:
