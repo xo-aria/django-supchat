@@ -163,7 +163,9 @@ That's it! 🎉 Your chat widget is live.
 You can override settings per template render:
 
 ```django
+{% raw %}
 {% supchat title="Help Desk" position="left" theme="dark" %}
+{% endraw %}
 ```
 
 ---
