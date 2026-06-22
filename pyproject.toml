@@ -99,4 +99,9 @@ line-length = 100
 target-version = "py39"
 
 [tool.ruff.lint]
-select = ["
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM"]
+
+[tool.mypy]
+python_version = "3.9"
+plugins = ["mypy_django_plugin.main"]
+strict = true
