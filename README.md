@@ -55,7 +55,6 @@ Just Django, vanilla JS, and Server-Sent Events.
 - 🚦 Built-in rate limiting (pluggable)
 - 🧹 HTML sanitization & control char stripping
 - 👥 Multi-operator support with assignment
-- 📊 Analytics dashboard with charts
 
 </td>
 </tr>
