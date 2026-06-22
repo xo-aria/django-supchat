@@ -75,8 +75,12 @@ Issues = "https://github.com/xo-aria/django-supchat/issues"
 Changelog = "https://github.com/xo-aria/django-supchat/blob/main/CHANGELOG.md"
 
 [tool.setuptools]
-packages = ["supchat"]
 include-package-data = true
+
+[tool.setuptools.packages.find]
+include = [
+    "supchat*"
+]
 
 [tool.setuptools.package-data]
 supchat = [
