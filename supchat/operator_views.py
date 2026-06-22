@@ -31,9 +31,18 @@ from .sse import streaming_response, sse_manager
 def _require_operator(request: HttpRequest) -> Operator:
     if not getattr(request.user, "is_authenticated", False):
         raise PermissionDenied("Login required.")
+
     operator = get_operator_for_user(request.user)
-    if operator is None and not request.user.is_staff:
-        raise PermissionDenied("Operator access required.")
+
+    if operator is None:
+        if request.user.is_staff:
+            operator = Operator.objects.create(
+                user=request.user,
+                is_online=False
+            )
+        else:
+            raise PermissionDenied("Operator access required.")
+
     return operator
 
 
