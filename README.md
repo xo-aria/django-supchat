@@ -7,7 +7,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/django-supchat.svg?logo=pypi&logoColor=white&labelColor=3776AB&color=informational)](https://pypi.org/project/django-supchat/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/django-supchat.svg?logo=python&logoColor=white&labelColor=3776AB)](https://pypi.org/project/django-supchat/)
 [![Django Versions](https://img.shields.io/pypi/frameworkversions/django/django-supchat.svg?logo=django&logoColor=white&labelColor=092E20)](https://pypi.org/project/django-supchat/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/license-APGL3.0-blue)](https://raw.githubusercontent.com/xo-aria/django-supchat/refs/heads/main/LICENSE)
 [![Downloads](https://static.pepy.tech/badge/django-supchat)](https://pepy.tech/project/django-supchat)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -544,32 +544,5 @@ Licensed under AGPL-3.0
 [⭐ Starring on GitHub](https://github.com/xo-aria/django-supchat) • [🍴 Forking](https://github.com/xo-aria/django-supchat/fork) • [💬 Joining Discussions](https://github.com/xo-aria/django-supchat/discussions)
 
 **Made with ❤️ by [xo-aria](https://github.com/xo-aria)**
-
-</div>
-
----
-
-## 🙏 Acknowledgments
-
-- Built with ❤️ for the Django community
-- Inspired by [Intercom](https://www.intercom.com/), [Crisp](https://crisp.chat/), and [Tawk.to](https://www.tawk.to/)
-- Icons from [Lucide](https://lucide.dev/)
-- Charts powered by [Chart.js](https://www.chartjs.org/)
-
----
-
-## 📞 Support
-
-- 🐛 **Bug Reports:** [GitHub Issues](https://github.com/xo-aria/django-supchat/issues)
-- 💡 **Feature Requests:** [GitHub Discussions](https://github.com/xo-aria/django-supchat/discussions)
-- 📧 **Email:** your-email@example.com
-
----
-
-<div align="center">
-
-**If django-supchat helps your project, consider giving it a ⭐ on GitHub!**
-
-[⭐ Star on GitHub](https://github.com/xo-aria/django-supchat) • [💬 Join Discussions](https://github.com/xo-aria/django-supchat/discussions)
 
 </div>
