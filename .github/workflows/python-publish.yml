@@ -1,27 +1,93 @@
-name: Publish to PyPI
+name: Release
 
+# Push a tag like v2.0.0 to: verify it, publish to PyPI, and create the GitHub Release.
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
+
+permissions:
+  contents: read
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
+  build:
+    name: Build and verify
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
-          python-version: '3.x'
-      - name: Install dependencies
+          python-version: "3.12"
+      - name: Tag must match the version in pyproject.toml
+        id: meta
         run: |
-          python -m pip install --upgrade pip
-          pip install build twine
-      - name: Build package
-        run: python -m build
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+          python - <<'PY'
+          import os, re, sys, tomllib
+          tag = os.environ["GITHUB_REF_NAME"]
+          version = tomllib.load(open("pyproject.toml", "rb"))["project"]["version"]
+          if tag != f"v{version}":
+              sys.exit(f"Tag {tag} does not match pyproject version {version}")
+          open(os.environ["GITHUB_OUTPUT"], "a").write(f"version={version}\n")
+          # release notes = this version's section of CHANGELOG.md
+          text = open("CHANGELOG.md", encoding="utf-8").read()
+          m = re.search(rf"^## {re.escape(version)}\s*$(.*?)(?=^## |\Z)", text, re.S | re.M)
+          if not m or not m.group(1).strip():
+              sys.exit(f"CHANGELOG.md has no section for {version}")
+          open("release-notes.md", "w", encoding="utf-8").write(m.group(1).strip() + "\n")
+          PY
+      - name: Install and run the test suite
+        run: |
+          python -m pip install -e ".[test]"
+          python -m pytest -q
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install build twine
+          python -m build
+          python -m twine check dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: |
+            dist/*
+            release-notes.md
+
+  publish-pypi:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+      - name: Check that the PyPI token is configured
+        env:
+          TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        run: test -n "$TOKEN" || { echo "::error::Add the PYPI_API_TOKEN repository secret (Settings > Secrets and variables > Actions)."; exit 1; }
+      - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
+          packages-dir: dist/
+
+  github-release:
+    name: GitHub Release
+    needs: [build, publish-pypi]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+      - name: Create the release with the changelog and the built files
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG" dist/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "django-supchat ${TAG#v}" \
+            --notes-file release-notes.md \
+            --verify-tag

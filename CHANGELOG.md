@@ -3,8 +3,11 @@
 ## 2.0.0
 
 ### Added
-- Redesigned operator workspace:
-  - three panes, live inbox, filters, search
+- Redesigned operator workspace (single-page app with real URLs):
+  - routes for every chat, analytics and each settings tab, with Back/Forward and deep links
+  - cursor-based pagination with infinite scroll, stable while new messages arrive
+  - theme-aware custom select, tabbed settings, consistent spacing
+  - five panes: rail, inbox, conversations, chat, details; live updates, filters, search
   - internal notes, quick replies (`/shortcut`), tags, priority, assignment
   - visitor blocking, transcripts, SVG analytics, desktop notifications, keyboard shortcuts
   - fixed language and theme buttons

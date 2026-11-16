@@ -190,7 +190,7 @@ https://github.com/xo-aria/django-supchat
 Licensed under AGPL-3.0
 ```
 
-Need a commercial license without the AGPL terms? Open an issue or [contact us](mailto:your-email@example.com).
+Need a commercial license without the AGPL terms? Open an issue on [GitHub](https://github.com/xo-aria/django-supchat/issues).
 
 ---
 
