@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "django-supchat"
-version = "1.8.0"
-description = "A lightweight, real-time support chat widget for Django powered by SSE"
+version = "2.0.0"
+description = "Real-time support chat for Django: widget, Telegram-style operator panel, AI auto-replies, webhooks. SSE, zero dependencies."
 readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "AGPL-3.0"}
@@ -25,6 +25,11 @@ keywords = [
     "widget",
     "customer-support",
     "live-chat",
+    "helpdesk",
+    "chatbot",
+    "openai",
+    "anthropic",
+    "rtl",
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -33,6 +38,7 @@ classifiers = [
     "Framework :: Django :: 4.2",
     "Framework :: Django :: 5.0",
     "Framework :: Django :: 5.1",
+    "Framework :: Django :: 5.2",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: GNU Affero General Public License v3",
     "Operating System :: OS Independent",
@@ -51,12 +57,15 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+channels = [
+    "channels>=4.0",
+]
 test = [
     "pytest>=7.0",
     "pytest-django>=4.5",
     "pytest-cov>=4.0",
     "pytest-asyncio>=0.21",
-    "factory-boy>=3.3",
+    "channels[daphne]>=4.0",
 ]
 dev = [
     "django-supchat[test]",
@@ -73,6 +82,7 @@ Documentation = "https://github.com/xo-aria/django-supchat#readme"
 Repository = "https://github.com/xo-aria/django-supchat"
 Issues = "https://github.com/xo-aria/django-supchat/issues"
 Changelog = "https://github.com/xo-aria/django-supchat/blob/main/CHANGELOG.md"
+Docs = "https://github.com/xo-aria/django-supchat/tree/main/docs"
 
 [tool.setuptools]
 include-package-data = true
@@ -85,9 +95,13 @@ include = [
 [tool.setuptools.package-data]
 supchat = [
     "templates/**/*.html",
+    "templates/supchat/*.html",
     "static/**/*",
     "locale/**/*",
 ]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["*.pyc", "__pycache__/*"]
 
 [tool.black]
 line-length = 100

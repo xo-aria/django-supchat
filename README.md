@@ -2,77 +2,93 @@
 
 # 💬 django-supchat
 
-### A Lightweight, Real-Time Support Chat for Django
+### Real-time support chat for Django: visitor widget, operator workspace, AI auto-replies
 
 [![PyPI version](https://img.shields.io/pypi/v/django-supchat.svg?logo=pypi&logoColor=white&labelColor=3776AB&color=informational)](https://pypi.org/project/django-supchat/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/django-supchat.svg?logo=python&logoColor=white&labelColor=3776AB)](https://pypi.org/project/django-supchat/)
 [![Django Versions](https://img.shields.io/pypi/frameworkversions/django/django-supchat.svg?logo=django&logoColor=white&labelColor=092E20)](https://pypi.org/project/django-supchat/)
-[![License: MIT](https://img.shields.io/badge/license-APGL3.0-blue)](https://raw.githubusercontent.com/xo-aria/django-supchat/refs/heads/main/LICENSE)
+[![Tests](https://github.com/xo-aria/django-supchat/actions/workflows/tests.yml/badge.svg)](https://github.com/xo-aria/django-supchat/actions/workflows/tests.yml)
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue)](https://github.com/xo-aria/django-supchat/blob/main/LICENSE)
 [![Downloads](https://static.pepy.tech/badge/django-supchat)](https://pepy.tech/project/django-supchat)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-**Zero dependencies. No WebSockets. No Redis. No React.**<br>
-Just Django, vanilla JS, and Server-Sent Events.
+**Zero runtime dependencies. No Redis, no WebSockets required, no build step.**<br>
+Django, vanilla JS and Server-Sent Events.
 
-[Installation](#-quick-start) • [Documentation](#-documentation)
+[Quick start](#-quick-start) · [Features](#-features) · [Documentation](https://github.com/xo-aria/django-supchat/tree/main/docs) · [راهنمای فارسی](https://github.com/xo-aria/django-supchat/blob/main/docs/fa.md)
+
+<img src="https://raw.githubusercontent.com/xo-aria/django-supchat/main/docs/images/demo.gif" alt="A visitor asks about pricing, the AI assistant answers, the visitor asks for a human and an operator replies from the panel in real time" width="100%">
 
 </div>
 
 ---
 
-## ✨ Overview
+## 🖼️ Preview
 
-**django-supchat** is a production-ready, drop-in support chat widget for Django projects. It provides a beautiful, real-time chat experience between website visitors (guests or authenticated users) and your support team — all powered by Django's ORM and Server-Sent Events (SSE).
+| Operator panel | Widget |
+|---|---|
+| ![Operator panel in English, light theme, with a conversation open and the details pane](https://raw.githubusercontent.com/xo-aria/django-supchat/main/docs/images/operator-light.png) | ![Chat widget on a storefront page with an AI answer](https://raw.githubusercontent.com/xo-aria/django-supchat/main/docs/images/widget-light.png) |
+| **Persian, dark, right-to-left** | **Widget in Persian, dark** |
+| ![Operator panel in Persian with right-to-left layout and dark theme](https://raw.githubusercontent.com/xo-aria/django-supchat/main/docs/images/operator-dark-fa.png) | ![Chat widget in Persian, dark theme](https://raw.githubusercontent.com/xo-aria/django-supchat/main/docs/images/widget-dark-fa.png) |
 
-> 🎯 **Philosophy:** Ship a powerful chat system without the complexity of WebSockets, Redis, or a frontend build step. Just `pip install` and go.
+<details>
+<summary><b>Analytics and mobile</b></summary>
 
----
+![Analytics dashboard with conversation, message, busiest-hour and rating charts](https://raw.githubusercontent.com/xo-aria/django-supchat/main/docs/images/analytics.png)
 
-## 🚀 Key Features
+![The widget and the operator panel on a phone-sized screen](https://raw.githubusercontent.com/xo-aria/django-supchat/main/docs/images/mobile.png)
 
-<table>
-<tr>
-<td width="50%">
-
-### 🎨 Frontend
-- ✨ Modern glassmorphism UI with smooth animations
-- 🌓 Auto Light/Dark theme (respects OS preference)
-- 🌐 Auto bilingual (Persian/English) with RTL support
-- ⌨️ Real-time typing indicators
-- ✅ Read receipts with visual feedback
-- 📱 Fully responsive (mobile fullscreen)
-- ♿ WCAG 2.1 accessible
-- 🎭 Customizable colors via CSS variables
-
-</td>
-<td width="50%">
-
-### ⚡ Backend
-- 🔌 **Zero external dependencies** — no Redis, no Channels
-- 📡 Real-time via Server-Sent Events (SSE)
-- 🔒 Signed, HTTP-only guest cookies
-- 🛡️ CSRF protection on all POST endpoints
-- 🚦 Built-in rate limiting (pluggable)
-- 🧹 HTML sanitization & control char stripping
-- 👥 Multi-operator support with assignment
-
-</td>
-</tr>
-</table>
+</details>
 
 ---
 
-## 📦 Quick Start
+## ✨ Features
 
-Get up and running in under 2 minutes.
+**For visitors (the widget)**
+- Real-time chat over SSE with typing indicators, read receipts (✓ / ✓✓) and an unread badge
+- Replies, emoji reactions, emoji picker, image and file attachments (paste or pick), image lightbox
+- Welcome message, quick-reply chips and an optional pre-chat form (name / email)
+- End chat, 1–5 star rating with a comment, transcript download or email
+- 8 languages (EN, FA, AR, TR, ES, DE, FR, RU) with a fixed language button and automatic RTL
+- Light / dark / auto themes, an accent color and CSS variables
+- Message sounds, synthesized with WebAudio (no audio files) and with a mute toggle
+- Skeleton loading, full screen on phones, keyboard and screen-reader friendly, honours `prefers-reduced-motion`
 
-### 1. Install
+**For operators (`/supchat/operator/`)**
+- A calm five-pane workspace (rail, inbox, conversations, chat, details) with live updates
+- Filters (all, unassigned, mine, unread, closed) and full-text search
+- Assignment, priority, subject and colored tags
+- Private internal notes that visitors never receive
+- Quick replies: type `/shortcut` in the composer
+- Attachments, replies, reactions, copy, and the visitor's typing state
+- Close, reopen, block visitor, delete, and transcript download or email
+- Analytics: conversations, messages, busiest hours, ratings, first-response time, top tags
+- English/Persian (and 6 more) with a fixed language button, plus light/dark theme
+- Desktop notifications, sound and keyboard shortcuts (`Ctrl/⌘ K`, `Alt ↑/↓`, `Esc`)
+
+**AI and integrations**
+- AI auto-replies from ChatGPT/OpenAI, Anthropic, or any OpenAI-compatible API (Groq, OpenRouter, Mistral, DeepSeek, Ollama, LM Studio, Azure…), or your own Python function
+- Human handoff: the bot stops as soon as an operator replies or the visitor asks for a person
+- Webhooks for Slack, Discord, or generic JSON signed with HMAC-SHA256
+- REST + SSE API with header-token auth for mobile and native clients
+- Optional WebSocket transport via Django Channels
+
+**Security**
+- CSRF on every cookie-authenticated POST
+- Signed HttpOnly guest identity
+- Access checks on every endpoint and stream
+- Audience-scoped events, so notes never leak to visitors
+- HTML stripping, a blocked-word list and rate limits
+- Upload checks: an extension allowlist plus magic-byte sniffing, and SVG/HTML are always refused
+- Attachments are served with `nosniff` and a sandbox CSP
+- Webhook SSRF guard, visitor blocking by guest or hashed IP, and a retention clean-up command
+
+---
+
+## 🚀 Quick start
 
 ```bash
 pip install django-supchat
 ```
-
-### 2. Configure Django
 
 ```python
 # settings.py
@@ -81,19 +97,11 @@ INSTALLED_APPS = [
     "supchat",
 ]
 
-# Optional: Customize the widget
 SUPCHAT = {
-    "TITLE": "Support",
-    "POSITION": "right",        # "right" or "left"
-    "THEME": "auto",            # "auto", "light", or "dark"
-    "ALLOW_GUEST": True,
-    "MAX_MESSAGE_LENGTH": 2000,
+    "TITLE": "Acme Support",
+    "WELCOME_MESSAGE": "Hi! How can we help?",
 }
-```
 
-### 3. Add URLs
-
-```python
 # urls.py
 from django.urls import include, path
 
@@ -103,448 +111,93 @@ urlpatterns = [
 ]
 ```
 
-### 4. Run Migrations
-
 ```bash
 python manage.py migrate
 ```
 
-### 5. Render the Widget
-
 ```django
-{% raw %}
 {% load supchat %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>My Site</title>
-</head>
-<body>
-    <h1>Welcome to my site!</h1>
-    
-    {% supchat %}
-</body>
-</html>
-{% endraw %}
+<!-- anywhere in your base template, usually right before </body> -->
+{% supchat %}
 ```
 
-That's it! 🎉 Your chat widget is live.
+Staff users open the operator panel at **`/supchat/operator/`**. That's it. 🎉
+
+> Want AI replies? Add `"AI": {"ENABLED": True, "PROVIDER": "openai", "API_KEY": env("OPENAI_API_KEY"), "MODEL": "<model id>"}`. See [docs/ai.md](https://github.com/xo-aria/django-supchat/blob/main/docs/ai.md).
 
 ---
 
 ## 📚 Documentation
 
-### Configuration Reference
-
-#### Widget Settings
-
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| `TITLE` | `str` | `"Support"` | Widget title displayed in header |
-| `POSITION` | `str` | `"right"` | Widget position: `"right"` or `"left"` |
-| `THEME` | `str` | `"auto"` | Theme: `"auto"`, `"light"`, or `"dark"` |
-| `ALLOW_GUEST` | `bool` | `True` | Allow anonymous visitors to chat |
-| `MAX_MESSAGE_LENGTH` | `int` | `2000` | Maximum characters per message |
-
-#### Advanced Settings
-
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| `HEARTBEAT_INTERVAL` | `int` | `25` | SSE heartbeat interval (seconds) |
-| `SSE_RETRY_MS` | `int` | `5000` | SSE reconnection delay (ms) |
-| `GUEST_COOKIE_NAME` | `str` | `"supchat_guest"` | Name of the guest identity cookie |
-| `GUEST_COOKIE_AGE` | `int` | `31536000` | Cookie lifetime (1 year in seconds) |
-| `RATE_LIMIT` | `dict` | `{"MESSAGES": 30, "WINDOW": 60}` | Default rate limit config |
-| `RATE_LIMIT_CALLBACK` | `callable` | `None` | Custom rate limit function |
-
-#### Per-Render Overrides
-
-You can override settings per template render:
-
-```django
-{% raw %}
-{% supchat title="Help Desk" position="left" theme="dark" %}
-{% endraw %}
-```
-
----
-
-## 🔐 Security Model
-
-django-supchat takes security seriously:
-
-- ✅ **CSRF Protection** — All POST endpoints require valid CSRF tokens
-- ✅ **Signed Guest Cookies** — Guest identity stored in signed, HTTP-only cookies
-- ✅ **Conversation Access Control** — Every endpoint (including SSE) verifies access
-- ✅ **Input Sanitization** — HTML stripped, control chars removed, length capped
-- ✅ **XSS Prevention** — Frontend uses `textContent`, never `innerHTML`
-- ✅ **Rate Limiting** — Cache-backed default + pluggable hook for custom logic
-
-### Custom Rate Limiting
-
-```python
-# settings.py
-def my_rate_limiter(request, action):
-    # Return True to allow, False to deny
-    if request.user.is_staff:
-        return True
-    return False  # Custom logic
-
-SUPCHAT = {
-    "RATE_LIMIT_CALLBACK": my_rate_limiter,
-}
-```
-
----
-
-## 👥 Operator Management
-
-### Creating Operators
-
-Create `Operator` records in Django admin for your support staff:
-
-```python
-from django.contrib.auth import get_user_model
-from supchat.models import Operator
-
-User = get_user_model()
-user = User.objects.get(username="support_agent")
-Operator.objects.create(user=user, is_online=True)
-```
-
-### Assigning Operators Programmatically
-
-```python
-from supchat.services import assign_operator
-
-# Auto-assign to current user (if they're an operator)
-assign_operator(request, conversation)
-
-# Assign to a specific operator
-assign_operator(request, conversation, operator=some_operator)
-```
-
-### Operator Dashboard
-
-Access the operator panel at `/supchat/operator/` (requires staff permissions).
-
-Features:
-- 💬 Real-time conversation list with unread badges
-- 📊 Analytics dashboard with 7-day & 30-day charts
-- 🎯 Conversation assignment & status management
-- 🌓 Dark/Light theme toggle
-- 🌐 Bilingual interface (EN/FA)
-
----
-
-## 🛠️ Public API
-
-The service layer is the stable integration point. Use these functions in your views, signals, or management commands:
-
-```python
-from supchat.services import (
-    get_or_create_conversation,
-    send_message,
-    close_conversation,
-    assign_operator,
-    mark_messages_read,
-)
-```
-
-### `get_or_create_conversation(request) → (Conversation, guest_id | None)`
-
-Returns an open conversation for the user/guest. Creates one if none exists.
-
-```python
-conversation, guest_id = get_or_create_conversation(request)
-```
-
-### `send_message(request, conversation, text) → Message`
-
-Sends a message and broadcasts it via SSE.
-
-```python
-message = send_message(request, conversation, "Hello!")
-```
-
-### `close_conversation(request, conversation) → Conversation`
-
-Closes a conversation (operators only).
-
-```python
-close_conversation(request, conversation)
-```
-
-### `assign_operator(request, conversation, operator=None) → Conversation`
-
-Assigns an operator to a conversation.
-
-```python
-assign_operator(request, conversation, operator=my_operator)
-```
-
-### `mark_messages_read(request, conversation, message_ids=None) → int`
-
-Marks messages as read. Returns count of updated messages.
-
-```python
-count = mark_messages_read(request, conversation)
-```
-
----
-
-## 🎨 Customization
-
-Override any of these in your project:
-
-```
-your_project/
-├── templates/
-│   └── supchat/
-│       └── widget.html          # Override the widget template
-└── static/
-    └── supchat/
-        ├── supchat.css          # Override styles
-        └── supchat.js           # Override behavior
-```
-
-### CSS Variables
-
-Customize colors by overriding CSS variables:
-
-```css
-.supchat-widget {
-    --sc-primary: #6366f1;
-    --sc-primary-hover: #4f46e5;
-    --sc-bubble-user: linear-gradient(135deg, #6366f1, #8b5cf6);
-    --sc-bubble-agent: #ffffff;
-    --sc-bg: rgba(255, 255, 255, 0.95);
-    --sc-fg: #0f172a;
-    --sc-border: rgba(226, 232, 240, 0.8);
-}
-```
-
-### JavaScript Events
-
-Listen to chat events:
-
-```javascript
-document.addEventListener('supchat:open', () => {
-    console.log('Chat opened');
-});
-
-document.addEventListener('supchat:close', () => {
-    console.log('Chat closed');
-});
-
-document.addEventListener('supchat:message', (e) => {
-    console.log('New message:', e.detail);
-});
-```
-
----
-
-## 🚢 Deployment
-
-### SSE Requirements
-
-The built-in SSE manager is **process-local** and works great for:
-- Development
-- Single-process deployments
-- Small to medium traffic
-
-For **multi-worker deployments** (Gunicorn, uWSGI with multiple workers), clients connected to different workers won't receive broadcasts. Solutions:
-
-#### Option 1: Single Worker
-```bash
-gunicorn myproject.wsgi:application --workers 1 --threads 8
-```
-
-#### Option 2: Cross-Worker Fanout
-Implement your own broadcast mechanism using Redis Pub/Sub, a message queue, or your cache backend:
-
-```python
-# myproject/sse_bridge.py
-from django.core.cache import cache
-from supchat.sse import sse_manager
-
-def broadcast_to_all_workers(conversation_id, event, data):
-    # Publish to Redis/cache
-    cache.set(f"supchat:broadcast:{conversation_id}", {
-        "event": event,
-        "data": data,
-    }, timeout=5)
-    
-    # Each worker subscribes and calls:
-    # sse_manager.broadcast(conversation_id, event, data)
-```
-
-### Proxy Configuration
-
-**Nginx:**
-```nginx
-location /supchat/ {
-    proxy_pass http://localhost:8000;
-    proxy_buffering off;              # Critical for SSE
-    proxy_cache off;
-    proxy_read_timeout 86400s;        # Long timeout for SSE
-    proxy_send_timeout 86400s;
-}
-```
-
-**Apache:**
-```apache
-<Location /supchat/>
-    ProxyPass http://localhost:8000/supchat/
-    ProxyPassReverse http://localhost:8000/supchat/
-    SetEnv proxy-nokeepalive 1
-    SetEnv proxy-sendchunked 1
-</Location>
-```
-
----
-
-## 🌐 Browser Support
-
-| Browser | Version |
-|---------|---------|
-| Chrome | 90+ |
-| Firefox | 88+ |
-| Safari | 14+ |
-| Edge | 90+ |
-| iOS Safari | 14+ |
-| Android Chrome | 90+ |
+| Guide | What's inside |
+|---|---|
+| [Installation](https://github.com/xo-aria/django-supchat/blob/main/docs/installation.md) | Requirements, setup, media files, upgrading from 1.x |
+| [Configuration](https://github.com/xo-aria/django-supchat/blob/main/docs/configuration.md) | Every `SUPCHAT` setting with defaults |
+| [Widget](https://github.com/xo-aria/django-supchat/blob/main/docs/widget.md) | Template tag options, theming, CSS variables, JS API and events |
+| [Operator panel](https://github.com/xo-aria/django-supchat/blob/main/docs/operator-panel.md) | Inbox, notes, quick replies, tags, analytics, shortcuts |
+| [AI auto-replies](https://github.com/xo-aria/django-supchat/blob/main/docs/ai.md) | OpenAI/ChatGPT, Anthropic, OpenAI-compatible hosts, custom functions, handoff |
+| [Webhooks](https://github.com/xo-aria/django-supchat/blob/main/docs/webhooks.md) | Slack, Discord, signed JSON and signature verification |
+| [REST & mobile API](https://github.com/xo-aria/django-supchat/blob/main/docs/api.md) | Endpoints, SSE events, header-token auth for native apps |
+| [Realtime & deployment](https://github.com/xo-aria/django-supchat/blob/main/docs/realtime.md) | SSE, proxies, multiple workers, the WebSocket adapter |
+| [Security](https://github.com/xo-aria/django-supchat/blob/main/docs/security.md) | Threat model and every protection in place |
+| [Languages](https://github.com/xo-aria/django-supchat/blob/main/docs/i18n.md) | Built-in languages, RTL, adding your own |
+| [Python API & signals](https://github.com/xo-aria/django-supchat/blob/main/docs/python-api.md) | Service functions, signals, management command |
+| [Development](https://github.com/xo-aria/django-supchat/blob/main/docs/development.md) | Running tests, the demo project, contributing |
+| [راهنمای فارسی](https://github.com/xo-aria/django-supchat/blob/main/docs/fa.md) | خلاصه‌ی نصب و امکانات به فارسی |
 
 ---
 
 ## 🗺️ Roadmap
 
-- [ ] File/image attachments
-- [ ] Message reactions & emoji
-- [ ] Conversation tags & categories
-- [ ] Canned responses / quick replies
-- [ ] Chat transcripts via email
-- [ ] Webhook integrations (Slack, Discord)
-- [ ] Bot/AI auto-responses
-- [ ] Multi-language support (beyond EN/FA)
-- [ ] Mobile SDK (iOS/Android)
-- [ ] WebSocket adapter (optional)
+- [x] File and image attachments
+- [x] Message reactions and emoji
+- [x] Conversation tags and priority
+- [x] Canned responses / quick replies
+- [x] Chat transcripts by email and download
+- [x] Webhook integrations (Slack, Discord, signed JSON)
+- [x] AI auto-responses (OpenAI-compatible, Anthropic, custom)
+- [x] Multi-language support beyond EN/FA (8 languages)
+- [x] REST/SSE API with token auth for mobile clients
+- [x] Optional WebSocket adapter (Django Channels)
+- [ ] Native iOS / Android SDK packages (the API is ready; see [docs/api.md](https://github.com/xo-aria/django-supchat/blob/main/docs/api.md))
+- [ ] Business hours and offline forms
+- [ ] Message search inside a conversation
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Here's how:
-
-1. Fork the repo
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
-
-### Development Setup
-
 ```bash
 git clone https://github.com/xo-aria/django-supchat.git
 cd django-supchat
-pip install -e '.[test]'
-pytest
+pip install -e ".[test]"
+pytest --cov=supchat
 ```
 
-The suite lives in `tests/` (services, views, operator panel, SSE, permissions, sanitization, template tag). Run with coverage: `pytest --cov=supchat`.
+See [docs/development.md](https://github.com/xo-aria/django-supchat/blob/main/docs/development.md) for the demo project and guidelines.
 
 ---
 
 ## 📄 License & Trademark
 
-### Code License
-**django-supchat** is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+**django-supchat** is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**. You may use, modify and distribute it, commercially too. If you distribute it or run a modified version as a network service, you must publish your source under the same license and state your changes. 📖 [Full license](https://github.com/xo-aria/django-supchat/blob/main/LICENSE)
 
-This means:
-- ✅ You can use, modify, and distribute this software
-- ✅ You can use it commercially
-- ⚠️ You **must** disclose source code (even for SaaS/network services)
-- ⚠️ You **must** include the same license in distributions
-- ⚠️ You **must** state changes you made
+The name **"SupChat"** is a trademark of xo-aria. See the [Trademark Policy](https://github.com/xo-aria/django-supchat/blob/main/TRADEMARK.md). When you distribute it, keep the attribution:
 
-📖 [Read the full AGPL-3.0 license](LICENSE)
-
-### Trademark Policy
-The name **"SupChat"** is a trademark of xo-aria. See the [Trademark Policy](TRADEMARK.md) for details on:
-- ✅ How to use the SupChat name
-- ✅ Attribution requirements
-- ❌ What you cannot do
-- 🎨 Logo usage guidelines
-
-**Quick Summary:**
-- You **must** keep "SupChat" in the name when distributing
-- You **must** include attribution: `Based on SupChat by xo-aria - https://github.com/xo-aria/django-supchat`
-- You **cannot** rebrand without mentioning SupChat
-- You **cannot** use SupChat logos without permission
-
-### Why AGPL-3.0?
-
-We chose AGPL-3.0 to:
-1. **Protect user freedom** - Ensure the software stays free
-2. **Close the SaaS loophole** - Even network services must share source code
-3. **Encourage contributions** - Improvements benefit everyone
-4. **Maintain quality** - Prevent closed-source forks from fragmenting the project
-
-### Commercial Use
-
-Yes, you can use SupChat commercially! Just:
-- ✅ Comply with AGPL-3.0 (disclose source code)
-- ✅ Follow the trademark policy (attribution)
-- ✅ Document your changes
-
-Need a **commercial license** without AGPL restrictions? [Contact us](mailto:your-email@example.com).
-
----
-
-## 🙏 Attribution
-
-If you use SupChat in your project, we'd appreciate:
-
-### Required (by license):
 ```markdown
 Based on SupChat by xo-aria
 https://github.com/xo-aria/django-supchat
 Licensed under AGPL-3.0
 ```
 
-### Appreciated (but optional):
-- ⭐ Star the repository on GitHub
-- 📝 Mention "Powered by SupChat" in your docs/about page
-- 🔗 Link back to https://github.com/xo-aria/django-supchat
-- 🐦 Tweet about it (we'd love to see your projects!)
-
----
-
-## 📞 Support & Contact
-
-### Bug Reports & Feature Requests:
-- 🐛 [GitHub Issues](https://github.com/xo-aria/django-supchat/issues)
-
-### Questions & Discussions:
-- 💬 [GitHub Discussions](https://github.com/xo-aria/django-supchat/discussions)
-
-### Commercial Licensing:
-- 📧 Email: [your-email@example.com]
-- 💼 Custom licensing available for closed-source projects
-
-### Security Issues:
-- 🔒 Please email security issues directly to [your-email@example.com]
-- ⚠️ Do **not** open public issues for security vulnerabilities
+Need a commercial license without the AGPL terms? Open an issue or [contact us](mailto:your-email@example.com).
 
 ---
 
 <div align="center">
 
-**If django-supchat helps your project, please consider:**
+**If django-supchat helps your project, please ⭐ the repository.**
 
-[⭐ Starring on GitHub](https://github.com/xo-aria/django-supchat) • [🍴 Forking](https://github.com/xo-aria/django-supchat/fork) • [💬 Joining Discussions](https://github.com/xo-aria/django-supchat/discussions)
-
-**Made with ❤️ by [xo-aria](https://github.com/xo-aria)**
+[Issues](https://github.com/xo-aria/django-supchat/issues) · [Discussions](https://github.com/xo-aria/django-supchat/discussions) · Made with ❤️ by [xo-aria](https://github.com/xo-aria)
 
 </div>

@@ -35,3 +35,23 @@ def test_missing_urls_raises(settings):
     settings.ROOT_URLCONF = "tests.empty_urls"
     with pytest.raises(RuntimeError):
         render("{% supchat %}")
+
+
+def test_widget_config_json(settings):
+    import html
+    import json
+    import re
+
+    settings.SUPCHAT = {"TITLE": "Help", "QUICK_REPLIES": ["Hi"], "LANGUAGE": "fa", "AI": {"ENABLED": True, "API_KEY": "secret-key"}}
+    out = render("{% supchat %}")
+    cfg = json.loads(html.unescape(re.search(r'data-config="([^"]+)"', out).group(1)))
+    assert cfg["title"] == "Help" and cfg["language"] == "fa" and cfg["quickReplies"] == ["Hi"] and cfg["ai"] is True
+    assert cfg["configUrl"] == "/supchat/config/"
+    assert "secret-key" not in out  # never leak provider credentials into the page
+
+
+def test_language_override():
+    import html
+
+    out = html.unescape(render('{% supchat language="ar" %}'))
+    assert '"language": "ar"' in out

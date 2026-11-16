@@ -2,15 +2,18 @@ from __future__ import annotations
 
 from django import forms
 
-from .conf import supchat_settings
 from .services import sanitize_message_text
 
 
 class SendMessageForm(forms.Form):
-    text = forms.CharField(strip=False)
+    text = forms.CharField(strip=False, required=False)
+
+    def __init__(self, *args, allow_empty: bool = False, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.allow_empty = allow_empty
 
     def clean_text(self):
-        return sanitize_message_text(self.cleaned_data["text"])
+        return sanitize_message_text(self.cleaned_data.get("text") or "", allow_empty=self.allow_empty)
 
 
 class MessageReadForm(forms.Form):
@@ -23,7 +26,3 @@ class MessageReadForm(forms.Form):
         if not isinstance(ids, list) or not all(isinstance(item, int) for item in ids):
             raise forms.ValidationError("message_ids must be a list of integers.")
         return ids
-
-
-class WidgetSettingsForm(forms.Form):
-    title = forms.CharField(initial=supchat_settings.get("TITLE"), required=False)

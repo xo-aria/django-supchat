@@ -38,3 +38,5 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 USE_TZ = True
 LOGIN_URL = "/admin/login/"
+SUPCHAT = {"BACKGROUND": "sync"}
+DEFAULT_FROM_EMAIL = "support@example.com"

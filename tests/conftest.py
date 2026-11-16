@@ -10,6 +10,11 @@ from supchat.sse import sse_manager
 
 
 @pytest.fixture(autouse=True)
+def _media(settings, tmp_path):
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+
+
+@pytest.fixture(autouse=True)
 def _clean_state():
     cache.clear()
     sse_manager._connections.clear()
@@ -102,3 +107,23 @@ def make_request(rf, user=None, cookies=None, **extra):
 @pytest.fixture
 def mkreq(rf):
     return lambda user=None, cookies=None, **extra: make_request(rf, user, cookies, **extra)
+
+
+PNG = bytes.fromhex("89504e470d0a1a0a") + bytes(64)
+
+
+@pytest.fixture
+def png():
+    from django.core.files.uploadedfile import SimpleUploadedFile
+
+    return lambda name="pic.png", content=PNG: SimpleUploadedFile(name, content, content_type="image/png")
+
+
+@pytest.fixture
+def sync_settings(settings):
+    """Helper to set SUPCHAT while keeping background work synchronous."""
+
+    def apply(**kw):
+        settings.SUPCHAT = {"BACKGROUND": "sync", **kw}
+
+    return apply

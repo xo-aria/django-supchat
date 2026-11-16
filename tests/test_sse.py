@@ -64,3 +64,30 @@ def test_streaming_response_headers():
     assert "no-cache" in r["Cache-Control"]
     assert r["X-Accel-Buffering"] == "no"
     r.close()
+
+
+@pytest.mark.asyncio
+async def test_async_event_stream_yields_live_events(settings):
+    from supchat.sse import async_event_stream
+
+    settings.SUPCHAT = {"HEARTBEAT_INTERVAL": 1}
+    gen = async_event_stream("c-async", poll=0.05)
+    assert (await gen.__anext__()).startswith("retry:")
+    assert "connected" in await gen.__anext__()
+    sse_manager.broadcast("c-async", "message.created", {"text": "live"})
+    assert "live" in await gen.__anext__()
+    assert await gen.__anext__() == ": heartbeat\n\n"
+    await gen.aclose()
+    assert sse_manager.active_count() == 0
+
+
+@pytest.mark.django_db
+def test_streaming_response_picks_async_iterator_for_asgi(rf):
+    from django.core.handlers.asgi import ASGIRequest
+
+    asgi_req = ASGIRequest({"type": "http", "method": "GET", "path": "/", "headers": [], "query_string": b""}, __import__("io").BytesIO())
+    r = streaming_response("c1", request=asgi_req)
+    assert r.is_async
+    r2 = streaming_response("c1", request=rf.get("/"))
+    assert not r2.is_async
+    r2.close()
