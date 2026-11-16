@@ -368,3 +368,60 @@ def test_analytics(staff_client, conv, guest_conv):
     assert d["top_tags"][0]["name"] == "Bug"
     assert len(staff_client.get(f"{OP}api/analytics/?days=999").json()["labels"]) == 90
     assert len(staff_client.get(f"{OP}api/analytics/?days=x").json()["labels"]) == 7
+
+
+# --------------------------------------------------------- SPA routes / cursor
+@pytest.mark.parametrize("path", ["", "analytics/", "settings/", "settings/tags/"])
+def test_spa_routes_serve_shell(staff_client, path):
+    r = staff_client.get(OP + path)
+    assert r.status_code == 200 and b"operator.js" in r.content
+
+
+def test_spa_chat_route_is_staff_only(staff_client, conv, guest_client):
+    assert staff_client.get(f"{OP}c/{conv.pk}/").status_code == 200
+    assert guest_client.get(f"{OP}c/{conv.pk}/").status_code == 302
+
+
+def _page(client, limit, cursor=None):
+    from urllib.parse import quote
+
+    q = f"limit={limit}" + (f"&cursor={quote(cursor)}" if cursor else "")
+    return client.get(f"{OP}conversations/?{q}").json()
+
+
+def test_cursor_pagination_walks_everything_once(staff_client, user):
+    from datetime import timedelta
+
+    from django.utils import timezone
+
+    now = timezone.now()
+    for i in range(7):
+        c = Conversation.objects.create(user=user)
+        Message.objects.create(conversation=c, sender_type="user", text=str(i))
+        Conversation.objects.filter(pk=c.pk).update(last_message_at=now - timedelta(minutes=i % 3))  # ties on purpose
+    seen, cursor = [], None
+    for _ in range(10):
+        d = _page(staff_client, 3, cursor)
+        seen += [c["id"] for c in d["conversations"]]
+        cursor = d["next_cursor"]
+        if not d["has_more"]:
+            assert cursor is None
+            break
+    assert len(seen) == 7 and len(set(seen)) == 7
+
+
+def test_cursor_is_stable_when_new_activity_arrives(staff_client, user):
+    for i in range(4):
+        c = Conversation.objects.create(user=user)
+        Message.objects.create(conversation=c, sender_type="user", text=str(i))
+    first = _page(staff_client, 2)
+    newest = Conversation.objects.create(user=user)  # jumps to the top between page loads
+    Message.objects.create(conversation=newest, sender_type="user", text="new")
+    second = _page(staff_client, 2, first["next_cursor"])
+    ids1 = {x["id"] for x in first["conversations"]}
+    ids2 = {x["id"] for x in second["conversations"]}
+    assert len(ids2) == 2 and not ids1 & ids2 and str(newest.pk) not in ids2
+
+
+def test_bad_cursor(staff_client):
+    assert staff_client.get(f"{OP}conversations/?cursor=nonsense").status_code == 400

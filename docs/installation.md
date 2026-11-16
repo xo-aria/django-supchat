@@ -3,7 +3,7 @@
 ## Requirements
 
 - Python 3.9+
-- Django 4.2+ (CI runs 4.2 and 5.1; developed against 6.1)
+- Django 4.2+ (CI runs 4.2, 5.1 and 5.2 on Python 3.10–3.13)
 - Any database Django supports
 - A cache backend for rate limits. The default `LocMemCache` works on one process; use Redis or Memcached with several workers.
 

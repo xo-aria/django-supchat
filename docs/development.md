@@ -21,7 +21,7 @@ The suite (230+ tests) covers:
 
 No test makes a real network call.
 
-CI runs the suite on Python 3.10–3.13 with Django 4.2 and 5.1 (`.github/workflows/tests.yml`).
+CI runs the suite on Python 3.10–3.13 with Django 4.2, 5.1 and 5.2 (`.github/workflows/tests.yml`).
 
 ## Running a demo locally
 

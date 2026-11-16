@@ -7,19 +7,27 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.10", "3.12", "3.13"]
-        django-version: ["4.2", "5.1"]
+        django-version: ["4.2", "5.1", "5.2"]
         exclude:
           - python-version: "3.13"
             django-version: "4.2"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
-      - run: pip install -e '.[test]' "django~=${{ matrix.django-version }}.0"
-      - run: pytest --cov=supchat
+          cache: pip
+      - name: Install
+        run: python -m pip install -e ".[test]" "django~=${{ matrix.django-version }}.0"
+      - name: Check migrations are up to date
+        run: python -m django makemigrations supchat --check --dry-run
+        env:
+          DJANGO_SETTINGS_MODULE: tests.settings
+          PYTHONPATH: .
+      - name: Test
+        run: python -m pytest --cov=supchat --cov-report=term-missing
