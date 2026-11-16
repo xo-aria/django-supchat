@@ -61,7 +61,7 @@ Errors look like `{"ok": false, "error": "..."}` with status `400` (validation),
 | `message.read` | `{"conversation", "message_ids"}` |
 | `reaction.updated` | `{"conversation", "message_id", "reactions"}` |
 | `typing.start` / `typing.stop` | `{"conversation", "sender_type"}` |
-| `conversation.closed` / `conversation.reopened` | `{"conversation"}` |
+| `conversation.| `GET conversations/?status=open|closed|all&assigned=me|unassigned&unread=1&priority=high&tag=<id>&q=<text>&limit=40&cursor=<next_cursor>` | Inbox and counters; follow `next_cursor` for the next page |` / `conversation.reopened` | `{"conversation"}` |
 | `operator.online` / `operator.offline` | `{"operator"}` |
 
 Visitors **never** receive internal events (notes, tags, assignment, AI hand-off).
@@ -74,7 +74,7 @@ These endpoints are under `operator/`. They need a staff session plus CSRF, and 
 |---|---|
 | `GET api/bootstrap/` | Current operator, operators, tags, quick replies, languages, AI status, webhooks (superuser), blocked list |
 | `POST api/heartbeat/` | Mark online |
-| `GET conversations/?status=open\|closed\|all&assigned=me\|unassigned&unread=1&priority=high&tag=<id>&q=<text>&limit=&offset=` | Inbox and counters |
+| `GET conversations/?status=open|closed|all&assigned=me|unassigned&unread=1&priority=high&tag=<id>&q=<text>&limit=40&cursor=<next_cursor>` | Inbox and counters; follow `next_cursor` for the next page |\|closed\|all&assigned=me\|unassigned&unread=1&priority=high&tag=<id>&q=<text>&limit=&offset=` | Inbox and counters |
 | `GET conversations/<id>/?before=<msg id>` | Conversation and messages (including notes); marks visitor messages read |
 | `POST conversations/<id>/send/` | `text`, `internal`, `reply_to`, `file` |
 | `POST conversations/<id>/close/` · `reopen/` · `delete/` · `block/` | Actions |

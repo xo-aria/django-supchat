@@ -117,7 +117,8 @@ textarea:focus-visible, input:focus-visible, select:focus-visible { outline: non
 .row-name { flex: 1; min-width: 0; font-weight: 600; font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .row-time { font-size: 11.5px; color: var(--ink-3); flex: none; font-variant-numeric: tabular-nums; }
 /* each preview keeps its own direction (correct ellipsis) but aligns with the UI */
-[dir="ltr"] :is(.row-name, .row-prev) { text-align: left; } [dir="rtl"] :is(.row-name, .row-prev) { text-align: right; }
+[dir="ltr"] :is(.row-name, .row-prev, .chat-head .name, .info-head b, .note p) { text-align: left; }
+[dir="rtl"] :is(.row-name, .row-prev, .chat-head .name, .info-head b, .note p) { text-align: right; }
 .row-prev { flex: 1; min-width: 0; font-size: 13px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .row-prev.typing { color: var(--accent); }
 .row.unread .row-prev { color: var(--ink); }

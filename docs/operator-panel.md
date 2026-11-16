@@ -87,9 +87,22 @@ The charts are inline SVG, with no third-party scripts.
 | `Alt + ↓ / ↑` | Next / previous conversation |
 | `Esc` | Close menus and popups, cancel the reply |
 
-## Deep links
+## Routes and deep links
 
-`/supchat/operator/#c=<conversation-uuid>` opens a conversation directly. This is useful in webhook messages.
+The panel is a single-page app with real URLs. You can reload a page, bookmark it, open it in a new tab (Ctrl/⌘-click), and use Back/Forward.
+
+| URL | Opens |
+|---|---|
+| `/supchat/operator/` | Inbox |
+| `/supchat/operator/c/<conversation-uuid>/` | One conversation, which is useful in webhook or email messages |
+| `/supchat/operator/analytics/` | Analytics |
+| `/supchat/operator/settings/<tab>/` | Settings. `<tab>` is one of `general`, `quick-replies`, `tags`, `ai`, `webhooks` or `blocked` |
+
+Old `#c=<uuid>` links are redirected automatically.
+
+## Pagination
+
+The inbox loads 40 conversations at a time and fetches the next page as you scroll. Pagination uses a cursor (`next_cursor`) instead of an offset. New activity that reorders the inbox therefore never duplicates or skips rows. Older messages inside a conversation load when you scroll to the top.
 
 ## Permissions
 
