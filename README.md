@@ -452,6 +452,8 @@ pip install -e '.[test]'
 pytest
 ```
 
+The suite lives in `tests/` (services, views, operator panel, SSE, permissions, sanitization, template tag). Run with coverage: `pytest --cov=supchat`.
+
 ---
 
 ## 📄 License & Trademark
